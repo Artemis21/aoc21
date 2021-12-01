@@ -25,7 +25,7 @@
         (local.tee $nextInputPointer (global.get $inputPointer))
         (local.set $last (i32.load))
         (local.set $remaining (local.get $inputCount))
-        (loop $part1Loop
+        (loop $loop
             local.get $last
             (i32.add (local.get $nextInputPointer) (i32.const 4))
             local.tee $nextInputPointer
@@ -39,54 +39,37 @@
             end
             (i32.sub (local.get $remaining) (i32.const 1))
             local.tee $remaining
-            if
-                br $part1Loop
-            end
+            if br $loop end
         )
         local.get $count
     )
 
-    (func $sumNextThree (param $firstPointer i32) (result i32)
-        (i32.add
-            (i32.add
-                (i32.load (local.get $firstPointer))
-                (i32.load
-                    (i32.add (local.get $firstPointer) (i32.const 4))
-                )
-            )
-            (i32.load
-                (i32.add (local.get $firstPointer) (i32.const 8))
-            )
-        )
-    )
-
     (func $part2 (param $inputCount i32) (result i32)
-        (local $last i32)
         (local $count i32)
         (local $remaining i32)
         (local $nextInputPointer i32)
-        (local.tee $nextInputPointer (global.get $inputPointer))
-        (local.set $last (call $sumNextThree))
+        (local.set $nextInputPointer (global.get $inputPointer))
         (local.set $remaining
             (i32.sub (local.get $inputCount) (i32.const 3))
         )
-        (loop $part1Loop
-            local.get $last
-            (i32.add (local.get $nextInputPointer) (i32.const 4))
-            local.tee $nextInputPointer
-            call $sumNextThree
-            local.tee $last
-            i32.lt_u
+        (loop $loop
+            (i32.lt_u
+                (i32.load (local.get $nextInputPointer))
+                (i32.load
+                    (i32.add (local.get $nextInputPointer) (i32.const 12))
+                )
+            )
             if
                 (local.set $count
                     (i32.add (local.get $count) (i32.const 1))
                 )
             end
+            (local.set $nextInputPointer
+                (i32.add (local.get $nextInputPointer) (i32.const 4))
+            )
             (i32.sub (local.get $remaining) (i32.const 1))
             local.tee $remaining
-            if
-                br $part1Loop
-            end
+            if br $loop end
         )
         local.get $count
     )

@@ -6,7 +6,7 @@ from wasmer_compiler_cranelift import Compiler
 
 BASE_DIR = pathlib.Path(__file__).parent
 INPUT_FILE = BASE_DIR / "input.txt"
-WASM_FILE = BASE_DIR / "day_01.wat"
+WASM_FILE = BASE_DIR / "main.wat"
 
 
 class Inputs:
