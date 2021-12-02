@@ -1,30 +1,67 @@
 (module
-    (import "aoc" "getInputCount" (func $getInputCount (result i32)))
-    (import "aoc" "getInputValue" (func $getInputValue (result i32)))
-    (import "aoc" "giveSolution" (func $giveSolution (param i32 i32)))
+    (memory $memory 1)
+    (export "memory" (memory $memory))
 
-    (memory 1)
-    (global $inputPointer i32 (i32.const 0))
-
-    (func $storeInputs (param $inputCount i32) (param $nextInputPointer i32)
-        local.get $inputCount
-        if
-            (i32.store (local.get $nextInputPointer) (call $getInputValue))
-            (call $storeInputs
-                (i32.sub (local.get $inputCount) (i32.const 1))
-                (i32.add (local.get $nextInputPointer) (i32.const 4))
-            )
-        end
+    (func $isNewline (param $char i32) (result i32)
+        (i32.eq (i32.const 10) (local.get $char))
     )
 
-    (func $part1 (param $inputCount i32) (result i32)
+    (func $digitToInt (param $char i32) (result i32)
+        (i32.sub (local.get $char) (i32.const 48))
+    )
+
+    (func $parseInput (param $inputPointer i32) (param $inputLength i32) (result i32 i32)
+        (local $readPointer i32)
+        (local $writePointer i32)
+        (local $writeLength i32)
+        (local $returnPointer i32)
+        (local $currentByte i32)
+        (local $currentValue i32)
+        (local.set $writeLength (i32.const 0))
+        (local.set $currentValue (i32.const 0))
+        (local.set $readPointer (local.get $inputPointer))
+        (local.tee $writePointer
+            (i32.add (local.get $readPointer) (local.get $inputLength))
+        )
+        local.set $returnPointer
+        (loop $loop
+            (i32.load8_u (local.get $readPointer))
+            local.tee $currentByte
+            call $isNewline
+            if
+                (i32.store (local.get $writePointer) (local.get $currentValue))
+                (local.set $writePointer
+                    (i32.add (local.get $writePointer) (i32.const 4))
+                )
+                (local.set $writeLength
+                    (i32.add (local.get $writeLength) (i32.const 1))
+                )
+                (local.set $currentValue (i32.const 0))
+            else
+                (local.set $currentValue
+                    (i32.add
+                        (i32.mul (local.get $currentValue) (i32.const 10))
+                        (call $digitToInt (local.get $currentByte))
+                    )
+                )
+            end
+            (local.tee $readPointer (i32.add (local.get $readPointer) (i32.const 1)))
+            local.get $returnPointer
+            i32.lt_u
+            if br $loop end
+        )
+        local.get $returnPointer
+        local.get $writeLength
+    )
+
+    (func $part1 (param $dataPointer i32) (param $dataLength i32) (result i32)
         (local $last i32)
         (local $count i32)
         (local $remaining i32)
         (local $nextInputPointer i32)
-        (local.tee $nextInputPointer (global.get $inputPointer))
+        (local.tee $nextInputPointer (local.get $dataPointer))
         (local.set $last (i32.load))
-        (local.set $remaining (local.get $inputCount))
+        (local.set $remaining (local.get $dataLength))
         (loop $loop
             local.get $last
             (i32.add (local.get $nextInputPointer) (i32.const 4))
@@ -44,13 +81,13 @@
         local.get $count
     )
 
-    (func $part2 (param $inputCount i32) (result i32)
+    (func $part2 (param $dataPointer i32) (param $dataLength i32) (result i32)
         (local $count i32)
         (local $remaining i32)
         (local $nextInputPointer i32)
-        (local.set $nextInputPointer (global.get $inputPointer))
+        (local.set $nextInputPointer (local.get $dataPointer))
         (local.set $remaining
-            (i32.sub (local.get $inputCount) (i32.const 3))
+            (i32.sub (local.get $dataLength) (i32.const 3))
         )
         (loop $loop
             (i32.lt_u
@@ -74,19 +111,13 @@
         local.get $count
     )
 
-    (func (export "main")
-        (local $inputCount i32)
-        call $getInputCount
-        local.tee $inputCount
-        global.get $inputPointer
-        call $storeInputs
-        (call $giveSolution
-            (i32.const 1)
-            (call $part1 (local.get $inputCount))
-        )
-        (call $giveSolution
-            (i32.const 2)
-            (call $part2 (local.get $inputCount))
-        )
+    (func (export "main") (param $inputPointer i32) (param $inputLength i32) (result i32 i32)
+        (local $dataPointer i32)
+        (local $dataLength i32)
+        (call $parseInput (local.get $inputPointer) (local.get $inputLength))
+        local.set $dataLength
+        local.set $dataPointer
+        (call $part1 (local.get $dataPointer) (local.get $inputLength))
+        (call $part2 (local.get $dataPointer) (local.get $inputLength))
     )
 )

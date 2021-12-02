@@ -1,7 +1,7 @@
 """Run the day 1 WASM solution."""
 import pathlib
 
-from wasmer import wat2wasm, engine, Store, Module, Instance, Function, ImportObject
+from wasmer import wat2wasm, engine, Store, Module, Instance
 from wasmer_compiler_cranelift import Compiler
 
 BASE_DIR = pathlib.Path(__file__).parent
@@ -9,51 +9,26 @@ INPUT_FILE = BASE_DIR / "input.txt"
 WASM_FILE = BASE_DIR / "main.wat"
 
 
-class Inputs:
-    """Store the input for the day."""
-
-    def __init__(self) -> None:
-        """Load the input."""
-        with open(INPUT_FILE, "r") as f:
-            self.data = list(map(int, f))
-
-    def get_count(self) -> int:
-        """Get the number of elements in the input."""
-        return len(self.data)
-
-    def get_next(self) -> int:
-        """Get the next element in the input."""
-        return self.data.pop(0)
-
-
-def output(part: int, value: int):
-    """Output the result."""
-    print(f"Part {part}: {value}")
-
-
-def load_wasm() -> tuple[Module, Store]:
+def load_wasm() -> Instance:
     """Load the WASM module."""
     with open(WASM_FILE) as f:
         wasm = wat2wasm(f.read())
     store = Store(engine.JIT(Compiler))
-    return Module(store, wasm), store
+    return Instance(Module(store, wasm))
 
 
-def prepare_instance() -> Instance:
-    """Prepare the WASM instance."""
-    module, store = load_wasm()
-    inputs = Inputs()
-    imports = ImportObject()
-    imports.register(
-        "aoc",
-        {
-            "getInputCount": Function(store, inputs.get_count),
-            "getInputValue": Function(store, inputs.get_next),
-            "giveSolution": Function(store, output),
-        }
-    )
-    return Instance(module, imports)
+def give_input(instance: Instance) -> tuple[int, int]:
+    """Put the puzzle input in to the WASM memory."""
+    with open(INPUT_FILE, "rb") as f:
+        data = f.read()
+    memory = instance.exports.memory
+    memory.grow(len(data))
+    memory.uint8_view()[0:len(data)] = data
+    return 0, len(data)
 
 
-inst = prepare_instance()
-inst.exports.main()
+if __name__ == "__main__":
+    instance = load_wasm()
+    part_1, part_2 = instance.exports.main(*give_input(instance))
+    print(f"Part 1: {part_1}")
+    print(f"Part 2: {part_2}")
