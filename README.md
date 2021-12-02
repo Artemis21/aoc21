@@ -33,5 +33,6 @@ Disclaimer: For WASM solutions, the input may be parsed in Python first.
 ```
       -------Part 1--------   -------Part 2--------
 Day       Time  Rank  Score       Time  Rank  Score
+  2   00:02:58   955      0   00:04:52   793      0
   1   00:00:51    46     55   00:05:27   747      0
 ```
