@@ -1,11 +1,15 @@
 """An automatic solution runner for the Advent of Code.
 
-Usage: {name} [day | part | --help]
+Usage: {name} [day | part | all | --help]
 
   day         A day to run the solutions of, eg. d4 or d16.
   part        A specific part to run the solution of, eg. d2p1 or d20p2.
+  all         Run all solutions of all days ("all").
   -h --help   Display this help message.
+
+By default, with no arguments, runs the current day.
 """
+import datetime
 import importlib
 import re
 import sys
@@ -35,6 +39,8 @@ if __name__ == "__main__":
         print((__doc__ or "").format(name=sys.argv[0]))
         sys.exit(0)
     if len(sys.argv) == 1:
+        run_day(datetime.datetime.now().day)
+    elif sys.argv[1].lower() == "all":
         for day in range(1, 26):
             run_day(day)
     else:

@@ -1,2 +1,3 @@
 src/aoc_helper/.token
 __pycache__
+.vscode/

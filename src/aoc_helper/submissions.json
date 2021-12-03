@@ -46,5 +46,39 @@
                 "message": "That's the right answer!  You are one gold star closer to finding the sleigh keys. You got rank 793 on this star's leaderboard.You have completed Day 2! You can [Shareon\n  Twitter\nMastodon] this victory or [Return to Your Advent Calendar]."
             }
         }
+    },
+    "3-1": {
+        "solution": "4191876",
+        "attempts": {
+            "-4114812": {
+                "colour": "red",
+                "message": "That's not the right answer.  If you're stuck, make sure you're using the full input data; there are also some general tips on the about page, or you can ask for hints on the subreddit.  Please wait one minute before trying again. (You guessed -4114812.) [Return to Day 3]"
+            },
+            "4153344": {
+                "colour": "red",
+                "message": "That's not the right answer.  If you're stuck, make sure you're using the full input data; there are also some general tips on the about page, or you can ask for hints on the subreddit.  Please wait one minute before trying again. (You guessed 4153344.) [Return to Day 3]"
+            },
+            "4191876": {
+                "colour": "green",
+                "message": "That's the right answer!  You are one gold star closer to finding the sleigh keys. [Continue to Part Two]"
+            }
+        }
+    },
+    "3-2": {
+        "solution": "3414905",
+        "attempts": {
+            "4201875": {
+                "colour": "red",
+                "message": "That's not the right answer.  If you're stuck, make sure you're using the full input data; there are also some general tips on the about page, or you can ask for hints on the subreddit.  Please wait one minute before trying again. (You guessed 4201875.) [Return to Day 3]"
+            },
+            "3190752": {
+                "colour": "red",
+                "message": "That's not the right answer.  If you're stuck, make sure you're using the full input data; there are also some general tips on the about page, or you can ask for hints on the subreddit.  Please wait one minute before trying again. (You guessed 3190752.) [Return to Day 3]"
+            },
+            "3414905": {
+                "colour": "green",
+                "message": "That's the right answer!  You are one gold star closer to finding the sleigh keys.You have completed Day 3! You can [Shareon\n  Twitter\nMastodon] this victory or [Return to Your Advent Calendar]."
+            }
+        }
     }
 }
