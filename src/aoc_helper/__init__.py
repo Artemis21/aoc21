@@ -75,17 +75,10 @@ class SubmissionResponseMessage(TypedDict):
     colour: str
 
 
-class SubmissionCacheItem(TypedDict):
-    """Submissions for a single day/part in the cache."""
-
-    solution: str | None
-    attempts: dict[str, SubmissionResponseMessage]
-
-
 class SubmissionResponse:
     """A response from a submission request."""
 
-    _cache: dict[str, SubmissionCacheItem] = {}
+    _cache: dict[str, dict[str, SubmissionResponseMessage]] = {}
 
     @classmethod
     def _load_cache(cls):
@@ -109,19 +102,13 @@ class SubmissionResponse:
         cls._load_cache()
         cache_key = f"{day}-{part}"
         if cache_key not in cls._cache:
-            cls._cache[cache_key] = {"solution": None, "attempts": {}}
-        # Make sure we don't already have a solution.
-        if (solution := cls._cache[cache_key]["solution"]) is not None:
-            response = cls._cache[cache_key]["attempts"].get(solution)
-            if response:
-                # It's a success, but it's not new.
-                return cls(response["colour"], response["message"])
+            cls._cache[cache_key] = {}
         # Calculate the solution.
         if (solution := solver()) is None:
             return cls("yellow", "Solving function returned None.")
         solution = str(solution)
         # Make sure we haven't already tried this solution.
-        if response := cls._cache[cache_key]["attempts"].get(solution):
+        if response := cls._cache[cache_key].get(solution):
             return cls(response["colour"], "Already submitted: {message}".format(**response))
         while True:
             rich.print(f"Submitting {solution} as solution to day {day} part {part}:")
@@ -132,12 +119,10 @@ class SubmissionResponse:
                 continue
             break
         # Add the response to the cache.
-        cls._cache[cache_key]["attempts"][solution] = {
+        cls._cache[cache_key][solution] = {
             "colour": message.colour,
             "message": message.message,
         }
-        if message.new_success:
-            cls._cache[cache_key]["solution"] = solution
         cls._dump_cache()
         return message
 

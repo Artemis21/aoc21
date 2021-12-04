@@ -26,13 +26,12 @@ Install dependencies from `requirements-wasm.txt`, eg.
 
 To run a given day, use `python3.9 -m wasm.day_XX`, eg. `python3.9 -m wasm.day_01`.
 
-Disclaimer: For WASM solutions, the input may be parsed in Python first.
-
 ## My Scores :)
 
 ```
       -------Part 1--------   -------Part 2--------
 Day       Time  Rank  Score       Time  Rank  Score
+  4   00:47:39  4772      0   01:04:55  4793      0
   3   00:12:05  3929      0   00:42:34  4364      0
   2   00:02:58   955      0   00:04:52   793      0
   1   00:00:51    46     55   00:05:27   747      0
