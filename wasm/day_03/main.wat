@@ -1,8 +1,4 @@
 (module
-
-    (import "log" "printi" (func $printi (param i32)))
-    (import "log" "printf" (func $printf (param f32)))
-    (import "log" "printarr2d" (func $printarr2d (param i32 i32 i32)))
     (memory $memory 1)
     (export "memory" (memory $memory))
 
@@ -86,7 +82,7 @@
             (i32.lt_u (local.get $currentPointer) (local.get $end))
             if br $loop end
         )
-        (f32.gt (local.get $sum) (f32.div
+        (f32.ge (local.get $sum) (f32.div
             (f32.convert_i32_u (local.get $arrayLength))
             (f32.const 2)
         ))
