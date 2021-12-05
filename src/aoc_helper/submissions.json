@@ -74,5 +74,33 @@
             "colour": "green",
             "message": "That's the right answer!  You are one gold star closer to finding the sleigh keys.You have completed Day 4! You can [Shareon\n  Twitter\nMastodon] this victory or [Return to Your Advent Calendar]."
         }
+    },
+    "5-1": {
+        "22735": {
+            "colour": "red",
+            "message": "That's not the right answer.  If you're stuck, make sure you're using the full input data; there are also some general tips on the about page, or you can ask for hints on the subreddit.  Please wait one minute before trying again. (You guessed 22735.) [Return to Day 5]"
+        },
+        "0": {
+            "colour": "red",
+            "message": "That's not the right answer.  If you're stuck, make sure you're using the full input data; there are also some general tips on the about page, or you can ask for hints on the subreddit.  Please wait one minute before trying again. (You guessed 0.) [Return to Day 5]"
+        },
+        "6189": {
+            "colour": "green",
+            "message": "That's the right answer!  You are one gold star closer to finding the sleigh keys. [Continue to Part Two]"
+        }
+    },
+    "5-2": {
+        "960400": {
+            "colour": "red",
+            "message": "That's not the right answer.  If you're stuck, make sure you're using the full input data; there are also some general tips on the about page, or you can ask for hints on the subreddit.  Please wait one minute before trying again. (You guessed 960400.) [Return to Day 5]"
+        },
+        "19148": {
+            "colour": "red",
+            "message": "That's not the right answer; your answer is too low.  If you're stuck, make sure you're using the full input data; there are also some general tips on the about page, or you can ask for hints on the subreddit.  Please wait one minute before trying again. (You guessed 19148.) [Return to Day 5]"
+        },
+        "19164": {
+            "colour": "green",
+            "message": "That's the right answer!  You are one gold star closer to finding the sleigh keys.You have completed Day 5! You can [Shareon\n  Twitter\nMastodon] this victory or [Return to Your Advent Calendar]."
+        }
     }
 }

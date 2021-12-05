@@ -1,4 +1,4 @@
-"""Run the day 1 WASM solution."""
+"""Run the day's WASM solution."""
 import pathlib
 
 from wasmer import wat2wasm, engine, Store, Module, Instance
