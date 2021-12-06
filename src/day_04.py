@@ -9,14 +9,12 @@ class Day(Solution):
 
     def __init__(self, raw: str):
         """Parse and store the raw data."""
-        raw_rolls, *raw_boards = raw.split("\n\n")
+        raw_rolls, *raw_boards = raw.strip().split("\n\n")
         self.rolls = list(map(int, raw_rolls.split(",")))
-        self.boards = []
-        for raw_board in raw_boards:
-            self.boards.append([
-                [int(n) for n in line.split() if n]
-                for line in raw_board.strip().splitlines()
-            ])
+        self.boards = [
+            [list(map(int, line.split())) for line in raw_board.splitlines()]
+            for raw_board in raw_boards
+        ]
 
     def _get_board_scores(self) -> list[tuple[int, int]]:
         """Get the win turn and score for each board."""
