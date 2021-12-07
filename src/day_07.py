@@ -1,4 +1,6 @@
 """The solution to day 7."""
+import statistics
+
 from .aoc_helper import Solution
 
 
@@ -9,11 +11,11 @@ class Day(Solution):
 
     def __init__(self, raw: str):
         """Parse and store the raw data."""
-        self.nums = sorted(list(map(int, raw.split(","))))
+        self.nums = list(map(int, raw.split(",")))
 
     def part_1(self) -> str | int | None:
         """Calculate the answer for part 1."""
-        position = self.nums[len(self.nums) // 2]
+        position = statistics.median_low(self.nums)
         total = 0
         for num in self.nums:
             total += abs(position - num)
