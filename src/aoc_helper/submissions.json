@@ -150,5 +150,17 @@
             "colour": "yellow",
             "message": "You don't seem to be solving the right level.  Did you already complete it? [Return to Day 7]"
         }
+    },
+    "8-1": {
+        "525": {
+            "colour": "green",
+            "message": "That's the right answer!  You are one gold star closer to finding the sleigh keys. You got rank 392 on this star's leaderboard. [Continue to Part Two]"
+        }
+    },
+    "8-2": {
+        "1083859": {
+            "colour": "green",
+            "message": "That's the right answer!  You are one gold star closer to finding the sleigh keys. You got rank 549 on this star's leaderboard.You have completed Day 8! You can [Shareon\n  Twitter\nMastodon] this victory or [Return to Your Advent Calendar]."
+        }
     }
 }
