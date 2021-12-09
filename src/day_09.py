@@ -32,19 +32,20 @@ class Day(Solution):
 
     def part_2(self) -> str | int | None:
         """Calculate the answer for part 2."""
-        to_process = [{coords} for coords in self._get_low_points()]
-        basins = [set() for _ in range(len(to_process))]
-        while any(to_process):
-            new = []
-            for basin in to_process:
-                new.append(basin_new := set())
-                for x, y in basin:
+        sizes = [0, 0, 0]
+        for basin_bottom in self._get_low_points():
+            to_process = {basin_bottom}
+            processed = set()
+            while to_process:
+                new = set()
+                for x, y in to_process:
                     for coords, height in self._get_surrounding(x, y):
-                        if height > self.map[y][x] and height != 9:
-                            basin_new.add(coords)
-            basins = [{*b, *p} for b, p in zip(basins, to_process)]
-            to_process = new
-        sizes = sorted(map(len, basins), reverse=True)
+                        if height != 9:
+                            new.add(coords)
+                processed.update(to_process)
+                to_process = new - processed
+            if (min_known := min(sizes)) < (size := len(processed)):
+                sizes[sizes.index(min_known)] = size
         return sizes[0] * sizes[1] * sizes[2]
 
 
