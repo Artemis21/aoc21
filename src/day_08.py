@@ -60,17 +60,17 @@ class Day(Solution):
                     four = inp
             value_map = {}
             for inp in inputs:
-                match (POPCNT[one & inp], POPCNT[four & inp], POPCNT[inp]):
-                    case (2, 3, 6): value = 0
-                    case (2, 2, 2): value = 1
-                    case (1, 2, 5): value = 2
-                    case (2, 3, 5): value = 3
-                    case (2, 4, 4): value = 4
-                    case (1, 3, 5): value = 5
-                    case (1, 3, 6): value = 6
-                    case (2, 2, 3): value = 7
-                    case (2, 4, 7): value = 8
-                    case (2, 4, 6): value = 9
+                match POPCNT[one & inp], POPCNT[four & inp], POPCNT[inp]:
+                    case 2, 3, 6: value = 0
+                    case 2, 2, 2: value = 1
+                    case 1, 2, 5: value = 2
+                    case 2, 3, 5: value = 3
+                    case 2, 4, 4: value = 4
+                    case 1, 3, 5: value = 5
+                    case 1, 3, 6: value = 6
+                    case 2, 2, 3: value = 7
+                    case 2, 4, 7: value = 8
+                    case 2, 4, 6: value = 9
                     case _: raise ValueError("Unmatched input.")
                 value_map[inp] = value
             for place, digit in enumerate(output):
