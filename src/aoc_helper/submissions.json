@@ -162,5 +162,33 @@
             "colour": "green",
             "message": "That's the right answer!  You are one gold star closer to finding the sleigh keys. You got rank 549 on this star's leaderboard.You have completed Day 8! You can [Shareon\n  Twitter\nMastodon] this victory or [Return to Your Advent Calendar]."
         }
+    },
+    "9-1": {
+        "465": {
+            "colour": "green",
+            "message": "That's the right answer!  You are one gold star closer to finding the sleigh keys. You achieved rank 24 on this star's leaderboard and gained 77 points! [Continue to Part Two]"
+        }
+    },
+    "9-2": {
+        "228470": {
+            "colour": "red",
+            "message": "That's not the right answer.  If you're stuck, make sure you're using the full input data; there are also some general tips on the about page, or you can ask for hints on the subreddit.  Please wait one minute before trying again. (You guessed 228470.) [Return to Day 9]"
+        },
+        "1269555": {
+            "colour": "green",
+            "message": "That's the right answer!  You are one gold star closer to finding the sleigh keys. You got rank 122 on this star's leaderboard.You have completed Day 9! You can [Shareon\n  Twitter\nMastodon] this victory or [Return to Your Advent Calendar]."
+        },
+        "162159000": {
+            "colour": "yellow",
+            "message": "You don't seem to be solving the right level.  Did you already complete it? [Return to Day 9]"
+        },
+        "475667820": {
+            "colour": "yellow",
+            "message": "You don't seem to be solving the right level.  Did you already complete it? [Return to Day 9]"
+        },
+        "8": {
+            "colour": "yellow",
+            "message": "You don't seem to be solving the right level.  Did you already complete it? [Return to Day 9]"
+        }
     }
 }
