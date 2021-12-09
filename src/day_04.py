@@ -16,7 +16,7 @@ class Day(Solution):
             for raw_board in raw_boards
         ]
 
-    def _get_board_scores(self) -> list[tuple[int, int]]:
+    def _get_board_scores(self) -> list[tuple[int, list[list[int]]]]:
         """Get the win turn and score for each board."""
         value_to_index = {value: n for n, value in enumerate(self.rolls)}
         scores = []
@@ -24,17 +24,22 @@ class Day(Solution):
         for board in self.boards:
             lines = [*board, *([row[n] for row in board] for n in range(columns))]
             win_turn = min(max(value_to_index[n] for n in line) for line in lines)
-            value = sum(n for row in board for n in row if value_to_index[n] > win_turn)
-            scores.append((win_turn, value * self.rolls[win_turn]))
+            scores.append((win_turn, board))
         return scores
+
+    def _get_board_score(self, win_turn: int, board: list[list[int]]) -> int:
+        """Get the score for a board."""
+        value_to_index = {value: n for n, value in enumerate(self.rolls)}
+        value = sum(n for row in board for n in row if value_to_index[n] > win_turn)
+        return self.rolls[win_turn] * value
 
     def part_1(self) -> str | int | None:
         """Calculate the answer for part 1."""
-        return min(self._get_board_scores())[1]
+        return self._get_board_score(*min(self._get_board_scores()))
 
     def part_2(self) -> str | int | None:
         """Calculate the answer for part 2."""
-        return max(self._get_board_scores())[1]
+        return self._get_board_score(*max(self._get_board_scores()))
 
 
 if __name__ == "__main__":

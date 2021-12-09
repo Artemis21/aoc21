@@ -95,7 +95,7 @@ class SubmissionResponse:
     def submit(
         cls,
         day: int,
-        solver: Callable[[], str | int | None],
+        solution: str | int | None,
         part: int,
     ) -> SubmissionResponse:
         """Submit a solution for a given day."""
@@ -104,7 +104,7 @@ class SubmissionResponse:
         if cache_key not in cls._cache:
             cls._cache[cache_key] = {}
         # Calculate the solution.
-        if (solution := solver()) is None:
+        if solution is None:
             return cls("yellow", "Solving function returned None.")
         solution = str(solution)
         # Make sure we haven't already tried this solution.
@@ -191,11 +191,11 @@ class Solution:
 
     def submit_1(self) -> SubmissionResponse:
         """Submit the solution for part 1."""
-        return SubmissionResponse.submit(self.day, self.part_1, 1)
+        return SubmissionResponse.submit(self.day, self.part_1(), 1)
 
     def submit_2(self) -> SubmissionResponse:
         """Submit the solution for part 2."""
-        return SubmissionResponse.submit(self.day, self.part_2, 2)
+        return SubmissionResponse.submit(self.day, self.part_2(), 2)
 
     @classmethod
     def get_instance(cls) -> "Solution":

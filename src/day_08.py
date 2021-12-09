@@ -1,7 +1,6 @@
 """The solution to day 8."""
 from .aoc_helper import Solution
 
-
 POPCNT = bytes(bin(x).count("1") for x in range(128))
 A = 1
 B = 2
@@ -10,7 +9,6 @@ D = 8
 E = 16
 F = 32
 G = 64
-CHARS = (A, B, C, D, E, F, G)
 
 
 class Day(Solution):
@@ -51,75 +49,32 @@ class Day(Solution):
                     total += 1
         return total
 
-    def _to_int(self, digits: list[int], position_map: dict[int, int]) -> int:
-        """Parse each digit of the output and return the value displayed."""
-        value = ""
-        for digit in digits:
-            mapped = 0
-            for from_, to in position_map.items():
-                mapped |= digit & from_ and to
-            value += {
-                (A | B | C | E | F | G): "0",
-                (C | F): "1",
-                (A | C | D | E | G): "2",
-                (A | C | D | F | G): "3",
-                (B | C | D | F): "4",
-                (A | B | D | F | G): "5",
-                (A | B | D | E | F | G): "6",
-                (A | C | F): "7",
-                (A | B | C | D | E | F | G): "8",
-                (A | B | C | D | F | G): "9",
-            }[mapped]
-        return int(value)
-
-    def _get_f_and_c(self, inputs: list[int]) -> tuple[int, int]:
-        """Get the input bits that should be mapped to f and c."""
-        by_length = {
-            length: [inp for inp in inputs if POPCNT[inp] == length]
-            for length in range(2, 8)
-        }
-        f = [
-            char for char in CHARS
-            if char & by_length[2][0] and all(char & inp_6 for inp_6 in by_length[6])
-        ][0]
-        c = [char for char in CHARS if char & by_length[2][0] and char != f][0]
-        return f, c
-
-    def _collapse_possibles(self, possibles: dict[int, int]):
-        """Pick a single value for each set of possibilities, once enough is known."""
-        for k, v in possibles.items():
-            if POPCNT[v] > 1:
-                for other_k, other_v in possibles.items():
-                    if other_k != k:
-                        possibles[k] &= ~other_v
-
-    def _reduce_possibles(self, inputs: list[int], possibles: dict[int, int]):
-        """Reduce the possibilities for each character in the input."""
-        for input in inputs:
-            matching = [i for i in CHARS if i & input]
-            complement = [i for i in CHARS if not i & input]
-            this_possible = ()
-            match POPCNT[input]:
-                case 2: this_possible = (matching, C | F), (complement, A | B | D | E | G)
-                case 3: this_possible = (matching, A | C | F), (complement, B | D | E | G)
-                case 4: this_possible = (matching, B | C | D | F), (complement, A | D | E | G)
-                case 6: this_possible = ((complement, E | C | D),)
-                case 5: this_possible = ((complement, B | C | E | F),)
-            for in_masks, out_mask in this_possible:
-                for in_mask in in_masks:
-                    possibles[in_mask] &= out_mask
-
     def part_2(self) -> str | int | None:
         """Calculate the answer for part 2."""
         total = 0
         for inputs, output in self.data:
-            possibles = {i: 127 for i in CHARS}
-            f, c = self._get_f_and_c(inputs)
-            possibles[f] = F
-            possibles[c] = C
-            self._reduce_possibles(inputs, possibles)
-            self._collapse_possibles(possibles)
-            total += self._to_int(output, possibles)
+            for inp in inputs:
+                if POPCNT[inp] == 2:
+                    one = inp
+                if POPCNT[inp] == 4:
+                    four = inp
+            value_map = {}
+            for inp in inputs:
+                match (POPCNT[one & inp], POPCNT[four & inp], POPCNT[inp]):
+                    case (2, 3, 6): value = 0
+                    case (2, 2, 2): value = 1
+                    case (1, 2, 5): value = 2
+                    case (2, 3, 5): value = 3
+                    case (2, 4, 4): value = 4
+                    case (1, 3, 5): value = 5
+                    case (1, 3, 6): value = 6
+                    case (2, 2, 3): value = 7
+                    case (2, 4, 7): value = 8
+                    case (2, 4, 6): value = 9
+                    case _: raise ValueError("Unmatched input.")
+                value_map[inp] = value
+            for place, digit in enumerate(output):
+                total += value_map[digit] * (10 ** (3 - place))
         return total
 
 
