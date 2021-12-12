@@ -230,5 +230,25 @@
             "colour": "green",
             "message": "That's the right answer!  You are one gold star closer to finding the sleigh keys.You have completed Day 11! You can [Shareon\n  Twitter\nMastodon] this victory or [Return to Your Advent Calendar]."
         }
+    },
+    "12-1": {
+        "0": {
+            "colour": "red",
+            "message": "That's not the right answer.  If you're stuck, make sure you're using the full input data; there are also some general tips on the about page, or you can ask for hints on the subreddit.  Please wait one minute before trying again. (You guessed 0.) [Return to Day 12]"
+        },
+        "4549": {
+            "colour": "green",
+            "message": "That's the right answer!  You are one gold star closer to finding the sleigh keys. You got rank 170 on this star's leaderboard. [Continue to Part Two]"
+        }
+    },
+    "12-2": {
+        "143170": {
+            "colour": "red",
+            "message": "That's not the right answer.  If you're stuck, make sure you're using the full input data; there are also some general tips on the about page, or you can ask for hints on the subreddit.  Please wait one minute before trying again. (You guessed 143170.) [Return to Day 12]"
+        },
+        "120535": {
+            "colour": "green",
+            "message": "That's the right answer!  You are one gold star closer to finding the sleigh keys. You achieved rank 71 on this star's leaderboard and gained 30 points!You have completed Day 12! You can [Shareon\n  Twitter\nMastodon] this victory or [Return to Your Advent Calendar]."
+        }
     }
 }

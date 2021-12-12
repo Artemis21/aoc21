@@ -24,13 +24,16 @@ they get the input from a text file, and give a solution on stdout.
 Install dependencies from `requirements-wasm.txt`, eg.
 `python3.9 -m pip install -r requirements-wasm.txt`.
 
-To run a given day, use `python3.9 -m wasm.day_XX`, eg. `python3.9 -m wasm.day_01`.
+To run a given day, use `python3.9 -m wasm.day_XX`, eg. `python3.9 -m wasm.day_01`. Or just use
+`python3.9 -m wasm` to run all days.
 
 ## My Scores :)
 
 ```
       -------Part 1--------   -------Part 2--------
 Day       Time  Rank  Score       Time  Rank  Score
+ 12   00:07:43   170      0   00:11:20    71     30
+ 11   00:19:03  1147      0   00:21:02  1024      0
  10   00:04:20   142      0   00:06:34    40     61
   9   00:02:37    24     77   00:11:18   122      0
   8   00:05:38   392      0   00:33:12   549      0
