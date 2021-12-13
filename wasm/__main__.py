@@ -19,7 +19,11 @@ def run_day(day: int):
     memory = instance.exports.memory
     memory.grow(len(data))
     memory.uint8_view()[0:len(data)] = data
-    part_1, part_2 = instance.exports.main(0, len(data))
+    part_1, *part_2 = instance.exports.main(0, len(data))
+    if len(part_2) > 1:
+        part_2 = "".join(map(chr, part_2))
+    else:
+        part_2 = part_2[0]
     print(f"Day {day:>2} part 1: {part_1}")
     print(f"Day {day:>2} part 2: {part_2}")
 
