@@ -25,8 +25,8 @@
                 br $loop
             end
         )
-        local.get $pointer
         local.get $value
+        local.get $pointer
     )
 
     (func $parseCoords (param $readPointer i32) (param $writePointer i32) (result i32 i32)
@@ -37,12 +37,14 @@
             (i32.ne (i32.load8_u (local.get $readPointer)) (global.get $asciiNewline))
             if
                 (call $parseInt (local.get $readPointer))
+                local.set $readPointer
                 local.set $x
-                local.set $readPointer
                 (call $parseInt (local.get $readPointer))
-                local.set $y
                 local.set $readPointer
-                (call $writeCoord (local.get $writePointer) (local.get $x) (local.get $y))
+                local.set $y
+                (call $writeCoord
+                    (local.get $writePointer) (local.get $length) (local.get $x) (local.get $y)
+                )
                 local.set $length
                 br $loop
             end
@@ -51,13 +53,33 @@
         local.get $length
     )
 
+    (func $parseAxis (param $pointer i32) (result i32 i32)
+        (i32.eq (i32.load8_u (local.get $pointer)) (i32.const 120))  ;; ASCI "x"
+        (i32.add (local.get $pointer) (i32.const 2))
+    )
+
     (func $parseInstructions
             (param $readPointer i32)
             (param $endPointer i32)
             (param $writePointer i32)
             (result i32)
         (local $length i32)
-        ;; TODO: Parse instructions
+        (local $axis i32)
+        (local $n i32)
+        (loop $loop
+            (local.set $readPointer (i32.add (local.get $readPointer) (i32.const 11)))
+            (call $parseAxis (local.get $readPointer))
+            local.set $readPointer
+            local.set $axis
+            (i32.store8 (local.get $writePointer) (local.get $axis))
+            (call $parseInt (local.get $readPointer))
+            local.set $readPointer
+            local.set $n
+            (i32.store (i32.add (local.get $writePointer) (i32.const 1)) (local.get $n))
+            (local.set $writePointer (i32.add (local.get $writePointer) (i32.const 5)))
+            (local.set $length (i32.add (local.get $length) (i32.const 1)))
+            (br_if $loop (i32.lt_u (local.get $readPointer) (local.get $endPointer)))
+        )
         local.get $length
     )
 
@@ -141,10 +163,10 @@
         (local $y i32)
         (local $value i32)
         (loop $loop
-            (local.set $value (i32.or (i32.shl (local.get $value) (i32.const 4) (call $getLetterRow
+            (local.set $value (i32.or (i32.shl (local.get $value) (i32.const 4)) (call $getLetterRow
                 (local.get $coordsPointer) (local.get $coordsLength)
                 (local.get $startX) (local.get $y)
-            ))))
+            )))
             (local.set $y (i32.add (local.get $y) (i32.const 1)))
             (br_if $loop (i32.lt_u (local.get $y) (i32.const 6)))
         )
@@ -155,14 +177,14 @@
             (param $coordsPointer i32)
             (param $coordsLength i32)
             (result i32 i32 i32 i32 i32 i32 i32 i32)
-        (call $getLetter (local.get $coordsPointer) (local.get $coordsLength) (i32.const 35))
-        (call $getLetter (local.get $coordsPointer) (local.get $coordsLength) (i32.const 30))
-        (call $getLetter (local.get $coordsPointer) (local.get $coordsLength) (i32.const 25))
-        (call $getLetter (local.get $coordsPointer) (local.get $coordsLength) (i32.const 20))
-        (call $getLetter (local.get $coordsPointer) (local.get $coordsLength) (i32.const 15))
-        (call $getLetter (local.get $coordsPointer) (local.get $coordsLength) (i32.const 10))
-        (call $getLetter (local.get $coordsPointer) (local.get $coordsLength) (i32.const 5))
         (call $getLetter (local.get $coordsPointer) (local.get $coordsLength) (i32.const 0))
+        (call $getLetter (local.get $coordsPointer) (local.get $coordsLength) (i32.const 5))
+        (call $getLetter (local.get $coordsPointer) (local.get $coordsLength) (i32.const 10))
+        (call $getLetter (local.get $coordsPointer) (local.get $coordsLength) (i32.const 15))
+        (call $getLetter (local.get $coordsPointer) (local.get $coordsLength) (i32.const 20))
+        (call $getLetter (local.get $coordsPointer) (local.get $coordsLength) (i32.const 25))
+        (call $getLetter (local.get $coordsPointer) (local.get $coordsLength) (i32.const 30))
+        (call $getLetter (local.get $coordsPointer) (local.get $coordsLength) (i32.const 35))
     )
 
     (func $readCoord (param $pointer i32) (param $position i32) (result i32 i32)
@@ -223,11 +245,15 @@
     )
 
     (func $foldCoord
-            (param $x i32) (param $y i32) (param $instrsPointer i32) (param $instrsLength i32)
+            (param $x i32)
+            (param $y i32)
+            (param $instrsPointer i32)
+            (param $instrsLength i32)
+            (result i32 i32)
         (local $position i32)
         (local $n i32)
         (loop $loop
-            (local.set $n (i32.load8 (i32.add (local.get $instrsPointer) (i32.add
+            (local.set $n (i32.load (i32.add (local.get $instrsPointer) (i32.add
                 (i32.mul (local.get $position) (i32.const 5))
                 (i32.const 1)
             ))))
@@ -260,7 +286,6 @@
             (param $instrsLength i32)
             (param $writePointer i32)
             (result i32)
-        (local $writePointer i32)
         (local $writeLength i32)
         (local $position i32)
         (local $currentX i32)
@@ -280,6 +305,8 @@
                 (local.get $currentX) (local.get $currentY)
             )
             local.set $writeLength
+            (local.set $position (i32.add (local.get $position) (i32.const 1)))
+            (br_if $loop (i32.lt_u (local.get $position) (local.get $coordsLength)))
         )
         local.get $writeLength
     )
@@ -314,8 +341,9 @@
         (call $getLetters (local.get $writePointer) (local.get $coordsLength))
     )
 
-    (func $main
-            (param $inputPointer i32) (param $inputLength i32)
+    (func (export "main")
+            (param $inputPointer i32)
+            (param $inputLength i32)
             (result i32 i32 i32 i32 i32 i32 i32 i32 i32)
         (local $coordsPointer i32)
         (local $coordsLength i32)
