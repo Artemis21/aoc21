@@ -32,6 +32,7 @@ To run a given day, use `python3.9 -m wasm.day_XX`, eg. `python3.9 -m wasm.day_0
 ```
       -------Part 1--------   -------Part 2--------
 Day       Time  Rank  Score       Time  Rank  Score
+ 14   00:06:58   308      0   00:21:10   433      0
  13   00:41:01  4627      0   00:44:49  3738      0
  12   00:07:43   170      0   00:11:20    71     30
  11   00:19:03  1147      0   00:21:02  1024      0
