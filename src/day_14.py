@@ -11,6 +11,24 @@ class Day(Solution):
 
     def __init__(self, raw: str):
         """Parse and store the raw data."""
+        raw="""NNCB
+
+CH -> B
+HH -> N
+CB -> H
+NH -> C
+HB -> C
+HC -> B
+HN -> C
+NN -> C
+BH -> H
+NC -> B
+NB -> B
+BN -> B
+BB -> N
+BC -> B
+CC -> N
+CN -> C"""
         self.init, raw_rules = raw.split("\n\n")
         self.rules = {}
         for line in raw_rules.splitlines():
@@ -27,10 +45,11 @@ class Day(Solution):
                 new[before] += count
                 new[after] += count
             counts = new
-        char_counts = collections.Counter()
-        for (first, last), count in counts.items():
+            print(counts)
+        char_counts = collections.Counter([self.init[-1]])
+        for (first, _), count in counts.items():
             char_counts[first] += count
-            char_counts[last] += count
+        print(char_counts)
         counts = list(char_counts.values())
         return max(counts) - min(counts)
 
