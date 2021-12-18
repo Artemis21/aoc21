@@ -53,11 +53,14 @@ class Day(Solution):
         """Calculate the answer for part 2."""
         total = 0
         for inputs, output in self.data:
+            one = four = None
             for inp in inputs:
                 if POPCNT[inp] == 2:
                     one = inp
                 if POPCNT[inp] == 4:
                     four = inp
+            if not (one and four):
+                raise ValueError("Could not find outputs for one and four.")
             value_map = {}
             for inp in inputs:
                 match POPCNT[one & inp], POPCNT[four & inp], POPCNT[inp]:
